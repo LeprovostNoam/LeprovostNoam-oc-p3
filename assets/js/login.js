@@ -1,3 +1,6 @@
+if (isUserLogged()) {
+    window.location.href = "index.html";
+}
 document.addEventListener("DOMContentLoaded", function() {
     // Fonction de login
     var loginForm = document.querySelector("#login form");

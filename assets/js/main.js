@@ -73,5 +73,47 @@ function logout() {
     localStorage.removeItem("userData");
     
     // Rediriger l'utilisateur vers l'index
-    window.location.href = "index.html";
+    window.location.href = "login.html";
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Fonction pour savoir si l'utilisateur est connecté ou non
+    function isUserLogged() {
+        // Récupérer les données de l'utilisateur depuis le localStorage
+        var userData = localStorage.getItem("userData");
+
+        // Si les données de l'utilisateur existent, renvoyer les données de l'utilisateur
+        if (userData) {
+            return JSON.parse(userData); // Convertir la chaîne JSON en objet JavaScript
+        } else {
+            return false;
+        }
+    }
+
+    // Récupérer l'élément de navigation "navLog" et le lien "login"
+    var navLog = document.getElementById("navLog");
+    var editBanner = document.querySelector(".edit-banner");
+    var editBanner = document.querySelector(".edit-banner");
+    var editPortfolio = document.querySelector(".edit-portfolio");
+    var loginLink = navLog.querySelector("a");
+
+    // Vérifier si l'utilisateur est connecté
+    if (isUserLogged()) {
+        // Si l'utilisateur est connecté, remplacez le lien "login" par "logout"
+        loginLink.textContent = "logout";
+        loginLink.classList.add("logoutBtn");
+        loginLink.href = "javascript:void(0);";
+
+        //Afficher la banner de mode édition ainsi que le bouton edit
+        editBanner.classList.remove("hidden");
+        editPortfolio.classList.remove("hidden");
+
+        var logoutButton = document.querySelector(".logoutBtn");
+        //Si l'utilisateur click sur le bouton logout
+        logoutButton.addEventListener("click", function() {
+            // Appeler la fonction de déconnexion
+            logout();
+        });
+    }
+});
+
