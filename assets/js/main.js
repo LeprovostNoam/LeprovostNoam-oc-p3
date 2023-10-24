@@ -1,41 +1,46 @@
 const endPoint = "http://localhost:5678/api";
 
-// Fonction générique pour effectuer des requêtes AJAX
-function request(url, type, data, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(type, url, true);
-
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            // Appelle le callback avec les données JSON en cas de succès
-            callback(null, JSON.parse(xhr.responseText));
-        } else {
-            // Appelle le callback avec une erreur en cas d'échec
-            callback("Erreur de requête : " + xhr.status, null);
+// Fonction générique pour effectuer des requêtes avec fetch
+function request(url, type, data, authToken, callback) {
+    // authToken (chaîne): Un jeton d'authentification Bearer optionnel. Peut être null.
+    let fetchOptions = {
+        method: type,
+        headers: {
+            'Content-Type': 'application/json',
         }
     };
 
-    xhr.onerror = function() {
-        // Appelle le callback en cas d'erreur réseau
-        callback("Erreur réseau", null);
-    };
+    if (authToken) {
+        fetchOptions.headers['Authorization'] = `Bearer ${authToken}`;
+    }
 
     if (type === "POST" || type === "PUT") {
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(JSON.stringify(data));
-    } else {
-        xhr.send();
+        fetchOptions.body = JSON.stringify(data);
     }
+
+    fetch(url, fetchOptions)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erreur de requête : " + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        callback(null, data);
+    })
+    .catch(error => {
+        callback(error, null);
+    });
 }
 
 // Récupère la liste des catégories depuis l'API
-function getCategories(callback) {
-    request(endPoint + "/categories", "GET", null, callback);
+function getCategories(authToken, callback) {
+    request(endPoint + "/categories", "GET", null, authToken, callback);
 }
 
 // Récupère la liste des travaux depuis l'API
-function getWorks(callback) {
-    request(endPoint + "/works", "GET", null, callback);
+function getWorks(authToken, callback) {
+    request(endPoint + "/works", "GET", null, authToken, callback);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -43,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const filtersContainer = document.querySelector(".filters");
 
     // Récupère les catégories et crée des boutons de filtre pour chaque catégorie
-    getCategories(function(error, categories) {
+    getCategories(null, function(error, categories) {
         if (error) {
             console.error("Erreur : " + error);
         } else {
@@ -109,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let allWorks = [];
 
     // Récupère tous les travaux au chargement de la page
-    getWorks(function(error, works) {
+    getWorks(null, function(error, works) {
         if (error) {
             console.error("Erreur lors de la récupération des travaux : " + error);
         } else {
