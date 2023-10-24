@@ -1,6 +1,6 @@
 // Récupère la liste des catégories depuis l'API
 function getCategories(callback) {
-    request(endPoint + "/categories", "GET", null, null, function(error, data) {
+    request(endPoint + "/categories", "GET", null, function(error, data) {
         if (error) {
             console.error("Erreur : " + error);
             callback(error, null);
@@ -12,7 +12,7 @@ function getCategories(callback) {
 
 // Récupère la liste des travaux depuis l'API
 function getWorks(callback) {
-    request(endPoint + "/works", "GET", null, null, function(error, data) {
+    request(endPoint + "/works", "GET", null,  function(error, data) {
         if (error) {
             console.error("Erreur lors de la récupération des travaux : " + error);
             callback(error, null);
