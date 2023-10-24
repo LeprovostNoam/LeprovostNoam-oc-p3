@@ -10,12 +10,11 @@ function request(url, type, data, callback) {
         }
     };
 
-    /*
-    On garde pour les actions avec token
-    if (authToken) {
-        fetchOptions.headers['Authorization'] = `Bearer ${authToken}`;
-    }
-    */
+   // Vérifier si l'utilisateur est connecté et a un token
+   var userData = isUserLogged();
+   if (userData && userData.token) {
+       fetchOptions.headers['Authorization'] = `Bearer ${userData.token}`;
+   }
 
     if (data) {
         fetchOptions.body = JSON.stringify(data);
@@ -53,4 +52,26 @@ function showErrorAlert(message) {
         // Réajouter la classe "hidden" pour masquer l'alerte
         alertBox.classList.add("hidden");
     }, 3000); 
+}
+
+
+// Fonction pour savoir si l'utilisateur est connecté ou non
+function isUserLogged() {
+    // Récupérer les données de l'utilisateur depuis le localStorage
+    var userData = localStorage.getItem("userData");
+
+    // Si les données de l'utilisateur existent, renvoyer les données de l'utilisateur
+    if (userData) {
+        return JSON.parse(userData); // Convertir la chaîne JSON en objet JavaScript
+    } else {
+        return false;
+    }
+}
+
+function logout() {
+    // Supprimer les données de l'utilisateur du localStorage
+    localStorage.removeItem("userData");
+    
+    // Rediriger l'utilisateur vers l'index
+    window.location.href = "index.html";
 }
