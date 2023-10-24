@@ -29,8 +29,37 @@ function getCategories(callback) {
     request(endPoint + "/categories", "GET", null, callback);
 }
 
+function getWorks(callback) {
+    request(endPoint + "/works", "GET", null, callback);
+}
+
+function createGalleryItem(work) {
+    const figure = document.createElement("figure");
+    const img = document.createElement("img");
+    img.src = work.imageUrl;
+    img.alt = work.title;
+    const figcaption = document.createElement("figcaption");
+    figcaption.textContent = work.title;
+
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+    gallery.appendChild(figure);
+}
+
+function displayWorks(works) {
+    gallery.innerHTML = ""; 
+    works.forEach(createGalleryItem);
+}
+
+function filterWorksByCategory(works, categoryId) {
+    return works.filter(function(work) {
+        return work.categoryId === categoryId;
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-    var filtersContainer = document.querySelector(".filters");
+    const gallery = document.querySelector(".gallery");
+    const filtersContainer = document.querySelector(".filters");
 
     getCategories(function(error, categories) {
         if (error) {
