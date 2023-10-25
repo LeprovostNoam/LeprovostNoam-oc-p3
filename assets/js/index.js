@@ -101,4 +101,40 @@ document.addEventListener("DOMContentLoaded", function() {
             displayWorks(allWorks);
         }
     });
+
+
+    /*  MODAL */
+
+    const editPortfolioButton = document.querySelector(".edit-portfolio");
+    const closeModalBtn = document.querySelector(".close-modal");
+
+    // Sélectionnez le modal
+    const modal = document.getElementById("modal1");
+    const modalWrapper = modal.querySelector(".modal-wrapper");
+
+    // Fonction pour ouvrir le modal
+    function openModal() {
+        modal.setAttribute("aria-hidden", "false");
+        modal.style.display = "block";
+    }
+
+    // Écoutez le clic sur l'élément .edit-portfolio pour ouvrir le modal
+    editPortfolioButton.addEventListener("click", openModal);
+
+    // Fonction pour fermer le modal
+    function closeModal() {
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+    }
+
+    // Écoutez le clic sur le bouton de fermeture pour fermer le modal
+    closeModalBtn.addEventListener("click", closeModal);
+
+    // Si l'utilisateur click à l'exterieur du modal, cela le ferme
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
 });
