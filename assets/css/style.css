@@ -202,7 +202,7 @@ nav li a.active {
     flex-direction: column;
 }
 
-#contact input, #login input {
+#contact input, #login input, .modal-footer input {
     height: 50px;
     font-size: 1.2em;
     border: none;
@@ -337,6 +337,11 @@ footer nav ul {
 	animation: slideFromTop 0.5s both;
 }
 
+@keyframes slideFromTop {
+    from { transform: translateY(-50px); }
+    to {  transform: translateY(0px); }
+}
+
 .modal-header {
     display: flex;
     justify-content: space-between; 
@@ -348,6 +353,7 @@ footer nav ul {
 	position: relative;
     top: 1em;
 }
+
 .modal-header .title-container h2 {
 	color: black;
 	text-align: center;
@@ -358,9 +364,28 @@ footer nav ul {
 	line-height: normal;
 }
 
-@keyframes slideFromTop {
-    from { transform: translateY(-50px); }
-    to {  transform: translateY(0px); }
+.modal-body {
+	margin: 0 5em;
+	margin-bottom: 2em;
+}
+
+.modal-body .photo-container {
+	padding: 1em;
+    text-align: center;
+	border-radius: 3px;
+	background-color: #E8F1F6;
+}
+
+.modal-footer {
+	margin: 0 5em;
+}
+.modal-footer .modal-footer-container {
+	border-top: 1px solid #B3B3B3;
+	text-align: center;
+}
+
+.modal-footer input {
+	height: 36px;
 }
 
 .close-modal {
@@ -390,4 +415,74 @@ footer nav ul {
     background-size: 100% 100%;
     display: inline-block;
     vertical-align: middle; 
+}
+
+
+.trash-modal:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background: url(../icons/trash-modal.svg) no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    vertical-align: middle; 
+}
+
+#modalBody2 {
+	display: none;
+}
+
+.modal-body article .card {
+    border: none;
+    padding: 0;
+}
+
+.card {
+    background-color: white;
+    padding: 5px;
+	width: calc(20% - 10px); 
+    margin: 5px;
+    box-sizing: border-box;
+	position: relative;
+}
+
+.trash-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    background: #000;
+    border-radius: 2px;
+	border: 1px solid black;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.trash-button:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: url(../icons/trash-modal.svg) no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+
+.modal-body-articles {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-start;
+}
+
+.modal-body article img {
+    width: 100%;
+    height: 100px;
+    display: block;
 }

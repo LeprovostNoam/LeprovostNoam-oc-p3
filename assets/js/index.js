@@ -114,9 +114,41 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fonction pour ouvrir le modal
     function openModal() {
-        modal.setAttribute("aria-hidden", "false");
-        modal.style.display = "block";
+        getWorks(function(error, works) {
+            if (!error) {
+                modal.setAttribute("aria-hidden", "false");
+                modal.style.display = "block";
+    
+                const modalBodyArticles = document.querySelector(".modal-body-articles");
+    
+                modalBodyArticles.innerHTML = '';
+    
+                // On parcourt les données des travaux et a créé des éléments pour chaque travail
+                works.forEach((work) => {
+                    const card = document.createElement("article");
+                    card.className = "card";
+    
+                    const image = document.createElement("img");
+                    image.src = work.imageUrl;
+                    image.alt = work.title;
+    
+                    const trashButton = document.createElement("button");
+                    trashButton.className = "trash-button";
+                    trashButton.onclick = function () {
+                        removeWork(work.id); // Appel de la fonction removeWork avec l'ID du travail
+                    };
+    
+                    // Ajoutez l'image et le bouton "trash" à l'élément
+                    card.appendChild(image);
+                    card.appendChild(trashButton);
+    
+                    // Ajoutez la carte au modalBodyArticles
+                    modalBodyArticles.appendChild(card);
+                });
+            }
+        });
     }
+    
 
     // Écoutez le clic sur l'élément .edit-portfolio pour ouvrir le modal
     editPortfolioButton.addEventListener("click", openModal);
