@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Crée un élément de galerie pour un travail
     function createGalleryItem(work) {
         const figure = document.createElement("figure");
+        figure.setAttribute('data-work-id', work.id);
         const img = document.createElement("img");
         img.src = work.imageUrl;
         img.alt = work.title;
@@ -127,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 works.forEach((work) => {
                     const card = document.createElement("article");
                     card.className = "card";
-    
+                    card.setAttribute('data-work-id', work.id);
                     const image = document.createElement("img");
                     image.src = work.imageUrl;
                     image.alt = work.title;
