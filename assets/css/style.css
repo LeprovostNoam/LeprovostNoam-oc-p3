@@ -386,6 +386,7 @@ footer nav ul {
 
 .modal-footer input {
 	height: 36px;
+	width: 235px;
 }
 
 .close-modal {
@@ -404,7 +405,6 @@ footer nav ul {
 
 .arrow-left-modal {
 	cursor: pointer;
-	display: none;
 }
 
 .arrow-left-modal:before {
@@ -428,9 +428,6 @@ footer nav ul {
     vertical-align: middle; 
 }
 
-#modalBody2 {
-	display: none;
-}
 
 .modal-body article .card {
     border: none;
@@ -485,4 +482,12 @@ footer nav ul {
     width: 100%;
     height: 100px;
     display: block;
+}
+
+.hide{
+    display: none;
+}
+
+input.modal-btn:disabled {
+    background-color: #A7A7A7;
 }

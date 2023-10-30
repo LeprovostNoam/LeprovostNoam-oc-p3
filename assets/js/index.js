@@ -157,6 +157,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function closeModal() {
         modal.style.display = "none";
         modal.setAttribute("aria-hidden", "true");
+        showModalBody1();
     }
 
     // Écoutez le clic sur le bouton de fermeture pour fermer le modal
@@ -168,5 +169,60 @@ document.addEventListener("DOMContentLoaded", function() {
             closeModal();
         }
     });
+
+
+
+    //Ajout des photos
+
+    const showModalBody2Btn = document.getElementById('showModalBody2Btn');
+    const modalTitles = document.querySelectorAll('.modal-title');
+    const modalBodies = document.querySelectorAll('.modal-body');
+    const modalBackBtn = document.querySelectorAll('.arrow-left-modal');
+    const modalBtns = document.querySelectorAll('.modal-btn');
+
+    function showModalBody2() {
+
+        //Changer le titre du modal
+        modalTitles[1].classList.remove('hide');
+        modalTitles[0].classList.add('hide');
+
+        //Changer le contenu du modal
+        modalBodies[1].classList.remove('hide');
+        modalBodies[0].classList.add('hide');
+
+        //Afficher le bouton retour
+        modalBackBtn[0].classList.remove('hide');
+
+        //Afficher le bouton Valider
+        modalBtns[1].classList.remove('hide');
+        modalBtns[0].classList.add('hide');
+
+        //Désactiver le bouton valider
+        modalBtns[1].setAttribute('disabled', true);
+    }
+
+    function showModalBody1() {
+
+        //Changer le titre du modal
+        modalTitles[0].classList.remove('hide');
+        modalTitles[1].classList.add('hide');
+
+        //Changer le contenu du modal
+        modalBodies[0].classList.remove('hide');
+        modalBodies[1].classList.add('hide');
+
+        //Afficher le bouton retour
+        modalBackBtn[0].classList.add('hide');
+
+        //Afficher le bouton Valider
+        modalBtns[0].classList.remove('hide');
+        modalBtns[1].classList.add('hide');
+    }
+
+    // Écoutez le clic sur le bouton "Ajouter une photo"
+    modalBtns[0].addEventListener("click", showModalBody2);
+
+    // Écoutez le clic sur le bouton retour
+    modalBackBtn[0].addEventListener("click", showModalBody1);
 
 });
