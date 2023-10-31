@@ -150,6 +150,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
+    // Supprimer un travail
+    function removeWork(workId) {
+        request(endPoint + "/works/" + workId, "DELETE", null, function(error, data) {
+            const worksElements = document.querySelectorAll('[data-work-id="' + workId + '"]');
+                worksElements.forEach(workElement => {
+                workElement.remove();
+            });
+        });
+    }
 
     // Écoutez le clic sur l'élément .edit-portfolio pour ouvrir le modal
     editPortfolioButton.addEventListener("click", openModal);

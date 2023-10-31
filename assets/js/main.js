@@ -10,11 +10,11 @@ function request(url, type, data, callback) {
         }
     };
 
-   // Vérifier si l'utilisateur est connecté et a un token
-   var userData = isUserLogged();
-   if (userData && userData.token) {
-       fetchOptions.headers['Authorization'] = `Bearer ${userData.token}`;
-   }
+    // Vérifier si l'utilisateur est connecté et a un token
+    var userData = isUserLogged();
+    if (userData && userData.token) {
+        fetchOptions.headers['Authorization'] = `Bearer ${userData.token}`;
+    }
 
     if (data) {
         fetchOptions.body = JSON.stringify(data);
@@ -25,7 +25,11 @@ function request(url, type, data, callback) {
         if (!response.ok) {
             throw new Error("Erreur de requête : " + response.status);
         }
-        return response.json();
+        if (type !== 'DELETE') {
+            return response.json();
+        }else{
+            return null; //Si DELETE ne rien retourner
+        }
     })
     .then(data => {
         callback(null, data);
