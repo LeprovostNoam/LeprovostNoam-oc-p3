@@ -370,12 +370,12 @@ footer nav ul {
 }
 
 .modal-body .photo-container {
-	padding: 1em;
     text-align: center;
 	border-radius: 3px;
 	background-color: #E8F1F6;
     display: flex;
     flex-direction: column;
+    height: 200px;
 }
 
 .modal-footer {
@@ -503,8 +503,6 @@ input.modal-btn:disabled {
     margin-right: 5px;
 }
 
-
-
 .modal-body select {
     height: 50px;
     font-size: 1.2em;
@@ -517,4 +515,29 @@ input.modal-btn:disabled {
     background-position: right 20px center;
     padding: 15px;
     width: 100%;
+}
+
+.photo-container span {
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom: 1em;
+}
+
+.file-input-label {
+    display: inline-block;
+    width: 40%;
+    padding: 10px 20px;
+    border: 1px solid #CBD6DC;
+    border-radius: 60px;
+    background: #CBD6DC;
+    color: #306685;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 1em auto!important;
+}
+
+.file-input-element {
+    display: none;
 }

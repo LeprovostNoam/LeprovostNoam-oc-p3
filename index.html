@@ -125,7 +125,9 @@
 			<div class="modal-body hide">
 				<div class="photo-container">
 					<i class="image-icon"></i>
-					photo container
+					<label class="file-input-label" for="file-input">+ Ajouter une photo</label>
+    				<input type="file" id="file-input" class="file-input-element" onchange="displayPhoto()" accept=".jpg, .jpeg, .png">
+					<span>jpg, png : 4mo max</span>
 				</div>
 				<form action="#" method="post">
 					<label for="title">Titre</label>

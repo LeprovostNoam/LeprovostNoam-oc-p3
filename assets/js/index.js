@@ -196,6 +196,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalBackBtn = document.querySelectorAll('.arrow-left-modal');
     const modalBtns = document.querySelectorAll('.modal-btn');
 
+    const fileInput = document.getElementById("file-input");
+    const imageIcon = document.querySelector(".image-icon");
+    const fileLabel = document.querySelector(".file-input-label");
+    const infoSpan = document.querySelector(".photo-container span");
+
+    const titleInput = document.getElementById("title");
+    const categoryInput = document.getElementById("category");
+
+
+    //On affiche la page principal du modal
     function showModalBody2() {
 
         //Changer le titre du modal
@@ -217,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modalBtns[1].setAttribute('disabled', true);
     }
 
+    //On affiche la page d'ajout de photos du modal
     function showModalBody1() {
 
         //Changer le titre du modal
@@ -233,6 +244,20 @@ document.addEventListener("DOMContentLoaded", function() {
         //Afficher le bouton Valider
         modalBtns[0].classList.remove('hide');
         modalBtns[1].classList.add('hide');
+
+        var photoContainer = document.querySelector(".photo-container");
+        var existingImage = photoContainer.querySelector("img");
+        if (existingImage) {
+            photoContainer.removeChild(existingImage);
+        }
+
+        //On enlève l'image si elle à été ajouté dans le formulaire
+        imageIcon.style.display = "";
+        fileLabel.style.display = "";
+        infoSpan.style.display = "";
+
+        //On retire l'image du file input
+        fileInput.value = "";
     }
 
     // Écoutez le clic sur le bouton "Ajouter une photo"
@@ -241,4 +266,51 @@ document.addEventListener("DOMContentLoaded", function() {
     // Écoutez le clic sur le bouton retour
     modalBackBtn[0].addEventListener("click", showModalBody1);
 
+    //On écouté si l'un des élément du formulaire est modifié
+    fileInput.addEventListener("change", addPhotoFormModified);
+    titleInput.addEventListener("input", addPhotoFormModified);
+    categoryInput.addEventListener("change", addPhotoFormModified);
 });
+
+//On affiche la photo dans le .photo-container
+function displayPhoto() {
+    var fileInput = document.getElementById("file-input");
+    var imageIcon = document.querySelector(".image-icon");
+    var fileLabel = document.querySelector(".file-input-label");
+    var infoSpan = document.querySelector(".photo-container span");
+
+    //Si l'utilisateur à sélectionné une photo
+    if (fileInput.files && fileInput.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            imageIcon.style.display = "none";
+            fileLabel.style.display = "none";
+            infoSpan.style.display = "none";
+
+            var image = document.createElement("img");
+            image.src = e.target.result;
+            image.style.width = "130px";
+            image.style.height = "200px";
+            image.style.margin = "auto";
+            document.querySelector(".photo-container").appendChild(image);
+        };
+
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+}
+
+//On disabled ou pas le bouton valider
+function addPhotoFormModified() {
+    var modalBtns = document.querySelectorAll('.modal-btn');
+    var fileInput = document.getElementById("file-input");
+    var titleInput = document.getElementById("title");
+    var categoryInput = document.getElementById("category");
+
+    //Si les champs sont bien remplie on active le bouton sinon on le désactive
+    if (fileInput.value.trim() !== '' && titleInput.value.trim() !== '' && categoryInput.value.trim() !== '') {
+        modalBtns[1].disabled = false;
+    } else {
+        modalBtns[1].disabled = true;
+    }
+}
