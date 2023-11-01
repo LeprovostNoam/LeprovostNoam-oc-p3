@@ -25,8 +25,9 @@ function getWorks(callback) {
 document.addEventListener("DOMContentLoaded", function() {
     const gallery = document.querySelector(".gallery");
     const filtersContainer = document.querySelector(".filters");
+    const categorySelect = document.getElementById("category");
 
-    // Récupère les catégories et crée des boutons de filtre pour chaque catégorie
+    // Récupère les catégories et crée des boutons de filtre pour chaque catégorie ainsi que le select pour la version edit
     getCategories(function(error, categories) {
         if (error) {
             console.error("Erreur : " + error);
@@ -37,6 +38,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 button.textContent = category.name;
                 button.dataset.categoryId = category.id;
                 filtersContainer.appendChild(button);
+
+                var option = document.createElement("option");
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
             });
         }
     });

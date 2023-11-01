@@ -195,21 +195,21 @@ nav li a.active {
     margin-bottom: 20px;
 }
 
-#contact form, #login form {
+#contact form, #login form, .modal-body form {
     text-align: left;
     margin-top: 30px;
     display: flex;
     flex-direction: column;
 }
 
-#contact input, #login input, .modal-footer input {
+#contact input, #login input, .modal-footer input, .modal-body input {
     height: 50px;
     font-size: 1.2em;
     border: none;
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-#contact label, #login label {
+#contact label, #login label, .modal-body label {
     margin: 2em 0 1em 0;
 }
 
@@ -366,7 +366,7 @@ footer nav ul {
 
 .modal-body {
 	margin: 0 5em;
-	margin-bottom: 2em;
+	margin-bottom: 5em;
 }
 
 .modal-body .photo-container {
@@ -374,6 +374,8 @@ footer nav ul {
     text-align: center;
 	border-radius: 3px;
 	background-color: #E8F1F6;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-footer {
@@ -470,8 +472,6 @@ footer nav ul {
     vertical-align: middle;
 }
 
-
-
 .modal-body-articles {
     display: flex;
     flex-wrap: wrap; 
@@ -490,4 +490,31 @@ footer nav ul {
 
 input.modal-btn:disabled {
     background-color: #A7A7A7;
+}
+
+.image-icon:before {
+    content: "";
+    width: 76px;
+    height: 76px;
+    background: url(../icons/image.svg) no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    vertical-align: middle; 
+    margin-right: 5px;
+}
+
+
+
+.modal-body select {
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    appearance: none;  /* On enlève le style par défaut de l'élement */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('../icons/arrow-down.svg') no-repeat right center;
+    background-position: right 20px center;
+    padding: 15px;
+    width: 100%;
 }
