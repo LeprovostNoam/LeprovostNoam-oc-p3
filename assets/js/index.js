@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const gallery = document.querySelector(".gallery");
     const filtersContainer = document.querySelector(".filters");
     const categorySelect = document.getElementById("category");
+    let allWorks = [];
 
     // Récupère les catégories et crée des boutons de filtre pour chaque catégorie ainsi que le select pour la version edit
     getCategories(function(error, categories) {
@@ -71,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Filtrer les travaux par catégorie
     function filterWorksByCategory(works, categoryId) {
         return works.filter(function(work) {
-            return work.categoryId === categoryId;
+            return work.categoryId == categoryId;
         });
     }
 
@@ -96,8 +97,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
-
-    let allWorks = [];
 
     // Récupère tous les travaux au chargement de la page
     getWorks(function(error, works) {
@@ -163,6 +162,8 @@ document.addEventListener("DOMContentLoaded", function() {
             worksElements.forEach(workElement => {
                 workElement.remove();
             });
+            //On enlève le travail correspondant du tableau allWorks
+            allWorks = allWorks.filter(work => work.id !== workId);
             showSuccessAlert('Le travail a été supprimé avec succès.');
         });
     }
@@ -291,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function() {
     titleInput.addEventListener("input", addPhotoFormModified);
     categoryInput.addEventListener("change", addPhotoFormModified);
 
-    function addWork(){
+    function addWork() {
         var fileInput = document.getElementById("file-input");
         var titleInput = document.getElementById("title");
         var categoryInput = document.getElementById("category");
@@ -314,9 +315,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         showErrorAlert("Une erreur s'est produite lors de l'ajout du travail.");
                         modalBtns[1].setAttribute('disabled', false);
                     } else {
+                        allWorks.push(data);
                         showSuccessAlert('Le travail a été ajouté avec succès.');
                         closeModal();
                         showModalBody1();
+                        displayNewWorks();                
                         modalBtns[1].setAttribute('disabled', false);
                     }
                 });            
@@ -331,6 +334,42 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     modalBtns[1].addEventListener("click", addWork);
+
+    //On réactualise les travaux après l'ajout d'un nouveau travail
+    function displayNewWorks() {
+        var filterButtons = document.querySelectorAll('.filter-button');
+                          
+        for (var button of filterButtons) {
+            if (button.classList.contains('active')) {
+                var categoryId = button.getAttribute('data-category-id')
+                if(categoryId == null){ //Si le bouton filtre actif est "tous"
+                    let allWorks = [];
+
+                    // On affiche tout les travaux 
+                    getWorks(function(error, works) {
+                        if (error) {
+                            console.error("Erreur lors de la récupération des travaux : " + error);
+                        } else {
+                            allWorks = works;
+                            displayWorks(allWorks);
+                        }
+                    });
+                }else{ //Si un filtre est activé, on réactualise seulement les travaux du filtre correspondant.
+                    console.log(categoryId);
+                    getWorks(function(error, works) {
+                        console.log(works);
+                        if (error) {
+                            console.error("Erreur lors de la récupération des travaux : " + error);
+                        } else {
+                            var filteredWorks = filterWorksByCategory(works, categoryId);
+                            console.log(filteredWorks);
+                            displayWorks(filteredWorks);
+                        }
+                    });
+                }
+            }
+        }
+    }
 });
 
 //On affiche la photo dans le .photo-container
