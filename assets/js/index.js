@@ -160,9 +160,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function removeWork(workId) {
         request(endPoint + "/works/" + workId, "DELETE", null, function(error, data) {
             const worksElements = document.querySelectorAll('[data-work-id="' + workId + '"]');
-                worksElements.forEach(workElement => {
+            worksElements.forEach(workElement => {
                 workElement.remove();
             });
+            showSuccessAlert('Le travail a été supprimé avec succès.');
         });
     }
 
@@ -258,6 +259,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //On retire l'image du file input
         fileInput.value = "";
+
+        //On retire les valeur des inputs
+        titleInput.value = "";
+        categoryInput.value = "";
     }
 
     // Écoutez le clic sur le bouton "Ajouter une photo"
@@ -266,10 +271,66 @@ document.addEventListener("DOMContentLoaded", function() {
     // Écoutez le clic sur le bouton retour
     modalBackBtn[0].addEventListener("click", showModalBody1);
 
+    //On disabled ou pas le bouton valider
+    function addPhotoFormModified() {
+        var modalBtns = document.querySelectorAll('.modal-btn');
+        var fileInput = document.getElementById("file-input");
+        var titleInput = document.getElementById("title");
+        var categoryInput = document.getElementById("category");
+
+        //Si les champs sont bien remplie on active le bouton sinon on le désactive
+        if (fileInput.value.trim() !== '' && titleInput.value.trim() !== '' && categoryInput.value.trim() !== '') {
+            modalBtns[1].disabled = false;
+        } else {
+            modalBtns[1].disabled = true;
+        }
+    }
+
     //On écouté si l'un des élément du formulaire est modifié
     fileInput.addEventListener("change", addPhotoFormModified);
     titleInput.addEventListener("input", addPhotoFormModified);
     categoryInput.addEventListener("change", addPhotoFormModified);
+
+    function addWork(){
+        var fileInput = document.getElementById("file-input");
+        var titleInput = document.getElementById("title");
+        var categoryInput = document.getElementById("category");
+    
+        var modalBtns = document.querySelectorAll('.modal-btn');
+        modalBtns[1].setAttribute('disabled', true);
+    
+        if (fileInput.value.trim() !== '' && titleInput.value.trim() !== '' && categoryInput.value.trim() !== '') {
+            var allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+            var maxSizeInBytes = 4 * 1024 * 1024; // 4 Mo en octets
+            if (fileInput.files[0].size <= maxSizeInBytes && allowedFormats.includes(fileInput.files[0].type)) {
+                //On crée le FormData
+                var workForm = new FormData();
+                workForm.append("image", fileInput.files[0]);
+                workForm.append("title", titleInput.value);
+                workForm.append("category", categoryInput.value);
+                //On ajoute le travail via l'API
+                request(endPoint + "/works", "POST", workForm, function(error, data) {
+                    if (error) {
+                        showErrorAlert("Une erreur s'est produite lors de l'ajout du travail.");
+                        modalBtns[1].setAttribute('disabled', false);
+                    } else {
+                        showSuccessAlert('Le travail a été ajouté avec succès.');
+                        closeModal();
+                        showModalBody1();
+                        modalBtns[1].setAttribute('disabled', false);
+                    }
+                });            
+            }else{
+                showErrorAlert("L'image doit être au format jpg ou png et être inferieur à 4Mo.");
+                modalBtns[1].setAttribute('disabled', false);
+            }
+        }else{
+            showErrorAlert("Veuillez remplir tous les champs.");
+            modalBtns[1].setAttribute('disabled', false);
+        }
+    }
+
+    modalBtns[1].addEventListener("click", addWork);
 });
 
 //On affiche la photo dans le .photo-container
@@ -297,20 +358,5 @@ function displayPhoto() {
         };
 
         reader.readAsDataURL(fileInput.files[0]);
-    }
-}
-
-//On disabled ou pas le bouton valider
-function addPhotoFormModified() {
-    var modalBtns = document.querySelectorAll('.modal-btn');
-    var fileInput = document.getElementById("file-input");
-    var titleInput = document.getElementById("title");
-    var categoryInput = document.getElementById("category");
-
-    //Si les champs sont bien remplie on active le bouton sinon on le désactive
-    if (fileInput.value.trim() !== '' && titleInput.value.trim() !== '' && categoryInput.value.trim() !== '') {
-        modalBtns[1].disabled = false;
-    } else {
-        modalBtns[1].disabled = true;
     }
 }

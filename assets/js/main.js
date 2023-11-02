@@ -5,9 +5,7 @@ function request(url, type, data, callback) {
     // authToken (chaîne): Un jeton d'authentification Bearer optionnel. Peut être null.
     let fetchOptions = {
         method: type,
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        headers: {},
     };
 
     // Vérifier si l'utilisateur est connecté et a un token
@@ -17,46 +15,79 @@ function request(url, type, data, callback) {
     }
 
     if (data) {
-        fetchOptions.body = JSON.stringify(data);
+        if (data instanceof FormData) {
+            fetchOptions.body = data;
+        } else {
+            fetchOptions.headers['Content-Type'] = 'application/json';
+            fetchOptions.body = JSON.stringify(data);
+        }
     }
 
     fetch(url, fetchOptions)
     .then(response => {
         if (!response.ok) {
+            // Gérer les erreurs HTTP ici
+            console.log("error");
             throw new Error("Erreur de requête : " + response.status);
         }
-        if (type !== 'DELETE') {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.startsWith("application/json")) {
             return response.json();
-        }else{
-            return null; //Si DELETE ne rien retourner
+        } else {
+            // La réponse n'est pas de type JSON, retournez null
+            return null;
         }
     })
     .then(data => {
-        callback(null, data);
+        if (data !== null) {
+            console.log("success");
+            callback(null, data);
+        } else {
+            callback("Réponse vide ou non valide au format JSON", null);
+        }
     })
     .catch(error => {
+        // Gérer les erreurs potentielles lors de l'analyse du JSON
         callback(error, null);
     });
 }
 
-// Affiche un message à l'utilisateur si une erreur est rencontrée
+// Affiche un message en rouge à l'utilisateur si une erreur est rencontrée
 function showErrorAlert(message) {
-    var alertBox = document.getElementById("alert-box");
-    var alertText = document.getElementById("alert-text");
+    var errorAlertBox = document.getElementById("error-alert-box");
+    var errorAlertText = document.getElementById("error-alert-text");
 
-    // Afficher le message personnalisé dans l'alerte
-    alertText.innerHTML = message;
+    // Afficher le message d'erreur dans l'alerte
+    errorAlertText.innerHTML = message;
 
-    // Supprimer la classe "hidden" pour afficher l'alerte
-    alertBox.classList.remove("hidden");
+    // Supprimer la classe "hidden" pour afficher l'alerte d'erreur
+    errorAlertBox.classList.remove("hidden");
 
-
-    // Fermer automatiquement l'alerte après 3 secondes
+    // Fermer automatiquement l'alerte d'erreur après 3 secondes
     setTimeout(function() {
-        // Réajouter la classe "hidden" pour masquer l'alerte
-        alertBox.classList.add("hidden");
+        // Réajouter la classe "hidden" pour masquer l'alerte d'erreur
+        errorAlertBox.classList.add("hidden");
     }, 3000); 
 }
+
+// Affiche un message en vert à l'utilisateur si une information doit être donnée
+function showSuccessAlert(message) {
+    var successAlertBox = document.getElementById("success-alert-box");
+    var successAlertText = document.getElementById("success-alert-text");
+
+    // Afficher le message de succès dans l'alerte
+    successAlertText.innerHTML = message;
+
+    // Supprimer la classe "hidden" pour afficher l'alerte de succès
+    successAlertBox.classList.remove("hidden");
+
+    // Fermer automatiquement l'alerte de succès après 3 secondes
+    setTimeout(function() {
+        // Réajouter la classe "hidden" pour masquer l'alerte de succès
+        successAlertBox.classList.add("hidden");
+    }, 3000); 
+}
+
 
 
 // Fonction pour savoir si l'utilisateur est connecté ou non
