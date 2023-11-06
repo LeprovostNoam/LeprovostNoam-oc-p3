@@ -26,8 +26,6 @@ function request(url, type, data, callback) {
     fetch(url, fetchOptions)
     .then(response => {
         if (!response.ok) {
-            // Gérer les erreurs HTTP ici
-            console.log("error");
             throw new Error("Erreur de requête : " + response.status);
         }
         const contentType = response.headers.get("content-type");
@@ -40,7 +38,6 @@ function request(url, type, data, callback) {
     })
     .then(data => {
         if (data !== null) {
-            console.log("success");
             callback(null, data);
         } else {
             callback("Réponse vide ou non valide au format JSON", null);
@@ -92,8 +89,8 @@ function showSuccessAlert(message) {
 
 // Fonction pour savoir si l'utilisateur est connecté ou non
 function isUserLogged() {
-    // Récupérer les données de l'utilisateur depuis le localStorage
-    var userData = localStorage.getItem("userData");
+    // Récupérer les données de l'utilisateur depuis le sessionStorage
+    var userData = sessionStorage.getItem("userData");
 
     // Si les données de l'utilisateur existent, renvoyer les données de l'utilisateur
     if (userData) {
@@ -104,8 +101,8 @@ function isUserLogged() {
 }
 
 function logout() {
-    // Supprimer les données de l'utilisateur du localStorage
-    localStorage.removeItem("userData");
+    // Supprimer les données de l'utilisateur du sessionStorage
+    sessionStorage.removeItem("userData");
     
     // Rediriger l'utilisateur vers l'index
     window.location.href = "login.html";
@@ -114,8 +111,8 @@ function logout() {
 document.addEventListener("DOMContentLoaded", function() {
     // Fonction pour savoir si l'utilisateur est connecté ou non
     function isUserLogged() {
-        // Récupérer les données de l'utilisateur depuis le localStorage
-        var userData = localStorage.getItem("userData");
+        // Récupérer les données de l'utilisateur depuis le sessionStorage
+        var userData = sessionStorage.getItem("userData");
 
         // Si les données de l'utilisateur existent, renvoyer les données de l'utilisateur
         if (userData) {

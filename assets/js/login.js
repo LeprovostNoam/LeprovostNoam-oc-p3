@@ -26,14 +26,14 @@ document.addEventListener("DOMContentLoaded", function() {
             if (error) {
                 showErrorAlert("Votre adresse e-mail ou votre mot de passe est incorrecte.");
             } else {
-                // Sauvegarde des données de l'utilisateur dans le localStorage
+                // Sauvegarde des données de l'utilisateur dans le sessionStorage
                 var userData = {
                     userId: data.userId,
                     token: data.token
                 };
 
-                // Stockage des données dans le localStorage sous le nom "userData"
-                localStorage.setItem("userData", JSON.stringify(userData));
+                // Stockage des données dans le sessionStorage sous le nom "userData"
+                sessionStorage.setItem("userData", JSON.stringify(userData));
 
                 // Rediriger l'utilisateur vers l'index
                 window.location.href = "index.html";
