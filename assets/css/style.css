@@ -555,3 +555,14 @@ input.modal-btn:disabled {
 .file-input-element {
     display: none;
 }
+
+.forgot-password{
+    font-family: Work Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: inherit;
+    text-align: center;
+    display: block;
+}
