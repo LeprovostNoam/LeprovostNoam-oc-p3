@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 var button = document.createElement("button");
                 button.className = "filter-button";
                 button.textContent = category.name;
-                button.dataset.categoryId = category.id;
+                button.setAttribute('data-category-id',  category.id);
                 filtersContainer.appendChild(button);
 
                 var option = document.createElement("option");
