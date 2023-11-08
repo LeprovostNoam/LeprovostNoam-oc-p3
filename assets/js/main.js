@@ -128,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var editBanner = document.querySelector(".edit-banner");
     var editPortfolio = document.querySelector(".edit-portfolio");
     var loginLink = navLog.querySelector("a");
+    var filters = document.querySelector('.filters');
 
     // Vérifier si l'utilisateur est connecté
     if (isUserLogged()) {
@@ -139,6 +140,9 @@ document.addEventListener("DOMContentLoaded", function() {
         //Afficher la banner de mode édition ainsi que le bouton edit
         editBanner.classList.remove("hidden");
         editPortfolio.classList.remove("hidden");
+
+        // On hide les boutons de filtres
+        filters.style.display = 'none';
 
         var logoutButton = document.querySelector(".logoutBtn");
         //Si l'utilisateur click sur le bouton logout

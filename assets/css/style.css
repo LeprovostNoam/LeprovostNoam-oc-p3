@@ -139,8 +139,9 @@ nav li a.active {
 
 #portfolio .title-container {
 	display: flex;
-    justify-content: center; 
-    align-items: center;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: 3em;
 }
 
 #portfolio h2, #portfolio span {
@@ -243,7 +244,7 @@ footer nav ul {
 /* Filtres */
 .filters {
 	text-align: center;
-	padding: 3em 0 5em 0;
+	padding: 0 0 5em 0;
 }
 
 .filter-button {
